@@ -1,0 +1,51 @@
+﻿@page "/fetchdata"
+@using blazorWebassembly3._2Preview1.Shared
+@using System.Linq.Dynamic.Core;
+@inject HttpClient Http
+
+<h1>Weather forecast</h1>
+
+<p>This component demonstrates fetching data from the server.</p>
+
+@if (forecasts == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>Temp. (C)</th>
+                <th>Temp. (F)</th>
+                <th>Summary</th>
+                <th>City</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var forecast in forecasts)
+            {
+            <tr>
+                <td>@forecast.Date.ToShortDateString()</td>
+                <td>@forecast.TemperatureC</td>
+                <td>@forecast.TemperatureF</td>
+                <td>@forecast.Summary</td>
+                <td>@forecast.City.Name</td>
+            </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private WeatherForecast[] forecasts;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var data = await Http.GetJsonAsync<WeatherForecast[]>("WeatherForecast");
+        forecasts = data.AsQueryable().OrderBy("TemperatureC").ToArray();
+        //var test = data.AsQueryable().GroupBy("Summary").ToDynamicList<IGrouping<dynamic, WeatherForecast>>().ToList();
+    }
+
+}
