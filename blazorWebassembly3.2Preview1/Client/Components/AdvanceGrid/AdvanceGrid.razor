@@ -1,0 +1,17 @@
+﻿@typeparam T
+
+    <div class="geckos-grid " id="@ContainerId">
+        <table class="table table-sm table-borderless" id="@Id">
+            <thead>
+                <tr>@TableHeader</tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Items)
+                {
+                    <tr>
+                        @RowTemplate(item)
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>

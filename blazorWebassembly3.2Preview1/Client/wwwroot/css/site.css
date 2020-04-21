@@ -2,6 +2,8 @@
 
 html, body {
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    height: 100%;
+    width: 100%;
 }
 
 a, .btn-link {
@@ -17,7 +19,8 @@ a, .btn-link {
 app {
     position: relative;
     display: flex;
-    flex-direction: column;
+    height: 100%;
+    width: 100%;
 }
 
 .top-row {
@@ -28,6 +31,9 @@ app {
 
 .main {
     flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
 }
 
     .main .top-row {
@@ -99,6 +105,9 @@ app {
 
 .content {
     padding-top: 1.1rem;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
 }
 
 .navbar-toggler {
@@ -181,3 +190,257 @@ app {
         display: block;
     }
 }
+
+
+
+
+:root {
+    --primary-background: #DEE2E6;
+    --table-background-color: white;
+    /*--background-2: white;*/
+    --background-menu: #F8F8F8;
+    --text-color: #212529;
+    --text-color-disabled: rgba(108, 117, 125, 0.7);
+    --text-color-grey: rgba(108, 117, 125, 1);
+    --primary: #428bca;
+    --hover-primary: #356d9e;
+    --hover-background-color: #efeee7;
+    --border-color: lightgray;
+    --secondary-border-color: #7F7F7F;
+    --discrete-border-color: #e7e7e7;
+    --active-menu-color: orange;
+    --table-header: #D2D8DD;
+    --table-row-odd: white;
+    --table-row-even: var(--background-menu);
+    --selected-element-table: #EFE4B0;
+    --table-group-background-color: #aec1d1;
+    --table-group-2-background-color: #aed1ba;
+    --backdrop-rgb: rgba(0,0,0, 0.4);
+    --loading-rgb: rgba(255,255,255, 0.5);
+    /*repris du theme*/
+    --fc-ff: #ffffff;
+    --fc-rouge: #ff5050;
+    --fc-rouge-clair-2: #C80000;
+    --fc-orange: #FA5612;
+    --bc-magenta: #7B5AB8;
+    --bc-magenta2: #8000FF;
+    --bc-vert-pomme: #649650;
+    --bc-verre-pomme-2: #00CAA1;
+    --fc-vert: #46a746;
+    --fc-default: var(--text-color);
+    --fc-bleuclair2: #0082D2;
+    --bc-vertlimeclair2: #00FF80;
+    --bc-yellowlight: lightyellow;
+    --bc-yellow: yellow;
+    --bc-rouge-laiteux: #AA8C8C;
+    --bc-grey-light-op-aa-2: #9D9999;
+    --bc-vert-op-a5: #BEFFBE;
+    --bc-blanc: white;
+    --fb-rouge: var(--fc-rouge);
+    --fb-orange: var(--fc-orange);
+    --fb-default: var(--fc-default);
+    --fb-bleuclair2: var(--fc-bleuclair2);
+    --rdv-inscr: Gainsboro;
+    --rdv-tr: var(--fb-bleuclair2);
+    --rdv-abs: var(--fc-rouge-clair-2);
+    --att-pec: var(--fc-vert);
+    --yellow-green: #9acd32;
+    --white-smoke: #6d5656;
+    --grey-dark-8: #888888;
+}
+.page-selector{
+    cursor: pointer;
+}
+.page-selector.selected {
+    cursor: default;
+    text-decoration: underline !important;
+}
+
+.geckos-grid {
+    background-color: var(--table-background-color);
+    overflow-y: auto;
+    overflow-x: hidden;
+    /*height: 100%;*/
+    flex-grow: 1;
+    /*overflow-x: hidden;*/
+}
+
+    .geckos-grid.transparent {
+        background-color: transparent;
+    }
+
+    .geckos-grid table {
+        margin-bottom: 0;
+        color: var(--text-color) !important;
+        outline: none;
+    }
+
+        .geckos-grid table thead {
+            /*display: table;
+            width: 100%;
+            width: calc(100% - 18px);*/
+            /*th.row-expander {
+                width: 1.2rem;
+            }*/
+        }
+
+            .geckos-grid table thead tr th {
+                /*background-color: var(--table-header);*/
+                background: linear-gradient(var(--primary-background), var(--table-background-color));
+                /*color: white;
+                    border: 1px solid red;*/
+                position: sticky !important;
+                top: 0px;
+                font-size: 12px;
+                font-weight: 400;
+                padding-left: 0;
+                z-index: 2;
+                /*
+                       on laisse un peu de plce pour le resize sinon conflit
+                    */
+                /*
+                       resizer de colonne pour les grilles
+                    */
+            }
+
+                .geckos-grid table thead tr th .header-clickable-zone {
+                    margin-left: 5px;
+                    margin-right: 5px;
+                }
+
+                .geckos-grid table thead tr th .resizer {
+                    position: absolute;
+                    top: 0;
+                    right: 0px;
+                    bottom: 0;
+                    left: auto;
+                    width: 4px;
+                    background-color: transparent;
+                    cursor: ew-resize;
+                }
+
+                    .geckos-grid table thead tr th .resizer:after {
+                        content: "";
+                        width: 1px;
+                        display: block;
+                        height: 100%;
+                        background-color: var(--secondary-border-color);
+                    }
+
+                .geckos-grid table thead tr th.orderable .header-clickable-zone {
+                    cursor: pointer;
+                }
+
+                .geckos-grid table thead tr th.orderable.ordered .lib-header-grid {
+                    margin-right: 3px;
+                }
+
+            .geckos-grid table thead .row-expander {
+                /*text-align: right;*/
+                /*display: flex;*/
+                cursor: pointer;
+                text-align: center;
+            }
+
+                .geckos-grid table thead .row-expander:before {
+                    font-family: "Font Awesome 5 Free";
+                    font-weight: 600;
+                    content: "\f101";
+                }
+
+                .geckos-grid table thead .row-expander.expand:before {
+                    content: "\f103";
+                }
+
+        .geckos-grid table tbody {
+            /*overflow: auto;
+            overflow-x: hidden;
+            display: block;
+            width: 100%;*/
+        }
+
+            .geckos-grid table tbody tr.group-grid-row {
+                cursor: pointer;
+                border-bottom: 1px solid var(--border-color);
+            }
+
+                .geckos-grid table tbody tr.group-grid-row[level="0"] {
+                    background-color: var(--table-group-background-color);
+                }
+
+                .geckos-grid table tbody tr.group-grid-row[level="1"] {
+                    background-color: var(--table-group-2-background-color);
+                }
+
+                .geckos-grid table tbody tr.group-grid-row .row-expander {
+                    /*text-align: right;*/
+                    display: flex;
+                }
+
+                    .geckos-grid table tbody tr.group-grid-row .row-expander:before {
+                        font-family: "Font Awesome 5 Free";
+                        margin-right: 0.8rem;
+                        font-weight: 600;
+                        content: "\f105";
+                    }
+
+                .geckos-grid table tbody tr.group-grid-row.expand .row-expander:before {
+                    content: "\f107";
+                }
+
+            .geckos-grid table tbody.group-element {
+                /*border-bottom: 1px solid var(--border-color);*/
+            }
+
+                .geckos-grid table tbody.group-element:not(.disabled) tr.element-grid-row:not(.unstyled) {
+                    cursor: pointer;
+                    /*border-bottom: 1px solid var(--border-color);*/
+                    /*&.even-element {
+                                background-color: var(--table-row-even);
+                            }
+
+                            &.odd-element {
+                                background-color: var(--table-row-odd);
+                            }*/
+                    /*&:nth-of-type(even) {
+                        background-color: var(--table-row-even);
+                    }
+
+                    &:nth-of-type(odd) {
+                        background-color: var(--table-row-odd);
+                    }*/
+                    /**/
+                }
+
+                    .geckos-grid table tbody.group-element:not(.disabled) tr.element-grid-row:not(.unstyled).selected-element {
+                        background-color: var(--selected-element-table) !important;
+                        /*color: var(--text-color)*/
+                    }
+
+                    .geckos-grid table tbody.group-element:not(.disabled) tr.element-grid-row:not(.unstyled):hover {
+                        background-color: var(--hover-background-color);
+                    }
+
+                    .geckos-grid table tbody.group-element:not(.disabled) tr.element-grid-row:not(.unstyled).overflow-row td {
+                        max-width: 0;
+                    }
+
+                    .geckos-grid table tbody.group-element:not(.disabled) tr.element-grid-row:not(.unstyled).disabled {
+                        cursor: not-allowed !important;
+                        color: var(--text-color-disabled) !important;
+                        background-color: initial !important;
+                    }
+
+                    .geckos-grid table tbody.group-element:not(.disabled) tr.element-grid-row:not(.unstyled).separator {
+                        border-bottom: 1px solid var(--discrete-border-color);
+                    }
+
+                .geckos-grid table tbody.group-element.disabled tr.element-grid-row {
+                    cursor: not-allowed !important;
+                    color: var(--text-color-disabled) !important;
+                    background-color: initial !important;
+                }
+
+        .geckos-grid table.without-cell-padding td {
+            padding: 0 0 6px;
+        }

@@ -1,0 +1,11 @@
+﻿@inherits ComponentBase
+@if (!string.IsNullOrEmpty(Label))
+{
+    <label for="@Id">@Label</label>
+}
+<input type="time" class="form-control time-control" required id="@Id.ToString()"
+       min="@Min?.ToString(@"hh\:mm")"
+       max="@Max?.ToString(@"hh\:mm")"
+       step="@Step"
+       @bind="@InternalValue"
+       disabled="@Disabled" />

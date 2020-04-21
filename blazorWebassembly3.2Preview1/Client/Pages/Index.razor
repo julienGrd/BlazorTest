@@ -3,10 +3,21 @@
 <h1>Hello, world!</h1>
 
 Welcome to your new app.
+@*<input type="time" class="form-control time-control" 
+       @bind="@date" step="300" />*@
+@*<GeckosTimePicker @bind-Value="@date" Step="600" Disabled="@IsDisabled" Label="Durée" />*@
+@*<GeckosTimePicker @bind-Value="@date" Step="300" />
+<span>result : @date.ToString()</span>*@
+
 
 <SurveyPrompt Title="How is Blazor working for you?" />
 
-@code{ 
+@code{
+
+    protected bool IsDisabled { get; set; }
+
+    protected DateTime date = DateTime.Now;
+
     protected override void OnInitialized()
     {
         base.OnInitialized();

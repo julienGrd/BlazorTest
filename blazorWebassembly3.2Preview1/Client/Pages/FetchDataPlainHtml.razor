@@ -1,0 +1,69 @@
+﻿@page "/fetchdataplain"
+@using blazorWebassembly3._2Preview1.Shared
+@using blazorWebassembly3._2Preview1.Client.Services;
+@using blazorWebassembly3._2Preview1.Client.Components;
+@inject HttpClient Http
+
+<h1>Weather forecast</h1>
+
+<p>This component demonstrates fetching data from the server.</p>
+
+@if (forecasts1 == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <div>
+        <a class="page-selector @(CurrentPage == Page.Page1 ? "selected" : "")" @onclick="@(() => SetPage(Page.Page1))">Page 1</a>
+        <a class="page-selector @(CurrentPage == Page.Page2 ? "selected" : "")" @onclick="@(() => SetPage(Page.Page2))">Page 2</a>
+        <a class="page-selector @(CurrentPage == Page.Page3 ? "selected" : "")" @onclick="@(() => SetPage(Page.Page3))">Page 3</a>
+    </div>
+    @if (CurrentPage == Page.Page1)
+    {
+        <ListForecastPlain Items="forecasts1" />
+    }
+    else if (CurrentPage == Page.Page2)
+    {
+        <ListForecastPlain Items="forecasts2" />
+    }
+    else if (CurrentPage == Page.Page3)
+    {
+        <ListForecastPlain Items="forecasts3" />
+    }
+
+}
+
+@code {
+    private WeatherForecast[] forecasts1;
+    private WeatherForecast[] forecasts2;
+    private WeatherForecast[] forecasts3;
+
+    private enum Page
+    {
+        Page1, Page2, Page3
+    }
+
+    private Page CurrentPage { get; set; } = Page.Page1;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var forecats = await Http.GetJsonAsync<WeatherForecast[]>("WeatherForecast");
+        forecasts1 = forecats.Take(500).ToArray();
+        forecasts2 = forecats.Skip(500).Take(500).ToArray();
+        forecasts3 = forecats.Skip(1000).Take(500).ToArray();
+    }
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        Console.WriteLine("fetchData onAfterRender");
+        base.OnAfterRender(firstRender);
+    }
+
+    private void SetPage(Page page)
+    {
+        this.CurrentPage = page;
+        this.StateHasChanged();
+    }
+
+}

@@ -1,0 +1,28 @@
+﻿<div class="geckos-grid ">
+    <table class="table table-sm table-borderless" tabindex="0" id="tableFetchDataJs">
+        <thead>
+
+            <tr>
+                <th>Date</th>
+                <th>Temp. (C</th>
+                <th>Temp. (F)</th>
+                <th>Summary</th>
+                <th>City</th>
+            </tr>
+        </thead>
+
+        <tbody class="group-element">
+            @foreach(var forecast in Items)
+            {
+            <tr>
+                <td>@forecast.Date.ToShortDateString()</td>
+                <td>@forecast.TemperatureC</td>
+                <td>@forecast.TemperatureF</td>
+                <td>@forecast.Summary</td>
+                <td>@forecast.City.Name</td>
+            </tr>
+
+            }
+        </tbody>
+    </table>
+</div>
