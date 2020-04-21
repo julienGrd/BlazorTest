@@ -1,0 +1,65 @@
+﻿@page "/fetchdatajs"
+@using BlazorTest.Shared
+@using BlazorTest.Client.Services;
+@using BlazorTest.Client.Components;
+@inject HttpClient Http
+@inject IJSRuntime jsRuntime
+
+<h1>Weather forecast</h1>
+
+<p>This component demonstrates fetching data from the server.</p>
+
+<div>
+    <a class="page-selector" onclick="setPage(1)" id="pageLink1">Page 1</a>
+    <a class="page-selector" onclick="setPage(2)" id="pageLink2">Page 2</a>
+    <a class="page-selector" onclick="setPage(3)" id="pageLink3">Page 3</a>
+</div>
+<div class="geckos-grid ">
+    <table class="table table-sm table-borderless" tabindex="0" id="tableFetchDataJs">
+        <thead>
+
+            <tr>
+                <th>Date</th>
+                <th>Temp. (C</th>
+                <th>Temp. (F)</th>
+                <th>Summary</th>
+                <th>City</th>
+            </tr>
+        </thead>
+
+        <tbody class="group-element">
+        </tbody>
+    </table>
+</div>
+@code {
+
+    private WeatherForecast[] forecasts1;
+    private WeatherForecast[] forecasts2;
+    private WeatherForecast[] forecasts3;
+
+    private enum Page
+    {
+        Page1, Page2, Page3
+    }
+
+    private Page CurrentPage { get; set; } = Page.Page1;
+
+    //protected override async Task OnInitializedAsync()
+    //{
+
+    //}
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            var forecats = await Http.GetJsonAsync<WeatherForecast[]>("WeatherForecast");
+            forecasts1 = forecats.Take(500).ToArray();
+            forecasts2 = forecats.Skip(500).Take(500).ToArray();
+            forecasts3 = forecats.Skip(1000).Take(500).ToArray();
+            await jsRuntime.InvokeVoidAsync("manageFetchDataJs", forecasts1, forecasts2, forecasts3);
+        }
+        await base.OnAfterRenderAsync(firstRender);
+    }
+
+}
