@@ -59,7 +59,7 @@ namespace blazorWebassembly3._2Preview1.Client.Components.Grid
                 InternalColumns.Add(column);
             }
 
-            this.StateHasChanged();
+            //this.StateHasChanged();
         }
 
         public void RemoveColumn(GridColumn<T> column)
@@ -72,6 +72,11 @@ namespace blazorWebassembly3._2Preview1.Client.Components.Grid
             //this.LaunchStateHasChanged();
         }
 
+        //protected override bool ShouldRender()
+        //{
+        //    Console.WriteLine(Environment.StackTrace);
+        //    return base.ShouldRender();
+        //}
         protected override void OnAfterRender(bool firstRender)
         {
             Console.WriteLine("geckosgrid afterRender");
@@ -108,6 +113,7 @@ namespace blazorWebassembly3._2Preview1.Client.Components.Grid
                 Index = index
             };
             this.ResetOrdering(this._currentDirection.Index);
+            Console.WriteLine("geckosgrid Order");
             this.StateHasChanged();
         }
 
