@@ -53,10 +53,9 @@
     {
         if (firstRender)
         {
-            var forecats = await Http.GetFromJsonAsync<WeatherForecast[]>("WeatherForecast");
-            forecasts1 = forecats.Take(500).ToArray();
-            forecasts2 = forecats.Skip(500).Take(500).ToArray();
-            forecasts3 = forecats.Skip(1000).Take(500).ToArray();
+            forecasts1 = await Http.GetFromJsonAsync<WeatherForecast[]>("WeatherForecast");
+            forecasts2 = await Http.GetFromJsonAsync<WeatherForecast[]>("WeatherForecast");
+            forecasts3 = await Http.GetFromJsonAsync<WeatherForecast[]>("WeatherForecast");
             await jsRuntime.InvokeVoidAsync("manageFetchDataJs", forecasts1, forecasts2, forecasts3);
         }
         await base.OnAfterRenderAsync(firstRender);

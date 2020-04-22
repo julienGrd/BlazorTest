@@ -6,12 +6,12 @@ using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace BlazorTest.Client.Components.Grid
+namespace BlazorTest.Client.Components.Grid.V1
 {
-    public partial class GridRow<T> : IDisposable
+    public partial class GridRowV1<T> : IDisposable
     {
         [CascadingParameter]
-        public Grid<T> Container { get; set; }
+        public GridV1<T> Parent { get; set; }
 
         [Parameter]
         public T Element { get; set; }
@@ -32,16 +32,20 @@ namespace BlazorTest.Client.Components.Grid
 
         protected override void OnInitialized()
         {
-            this.Container.PropertyChanged -= Container_PropertyChanged;
-            this.Container.PropertyChanged += Container_PropertyChanged;
+            this.Parent.PropertyChanged -= Container_PropertyChanged;
+            this.Parent.PropertyChanged += Container_PropertyChanged;
             base.OnInitialized();
         }
 
-
+        protected override void OnAfterRender(bool firstRender)
+        {
+            Console.WriteLine($"GridV1 row {this.Index} afterRender");
+            base.OnAfterRender(firstRender);
+        }
         private void Container_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             //on s'abonne au changement de selectedItem savoir si on doit rafraichir notre élément
-            if (e.PropertyName == nameof(this.Container.CurrentItem))
+            if (e.PropertyName == nameof(this.Parent.CurrentItem))
             {
                 
                 this.ManageSelection();
@@ -65,13 +69,13 @@ namespace BlazorTest.Client.Components.Grid
         private void ManageSelection()
         {
             //si le current item est notre elemnt, on le sélectionne
-            if (!this.IsSelected && this.Container.IsSelected(Element))
+            if (!this.IsSelected && this.Parent.IsSelected(Element))
             {
                 Console.WriteLine("grid row become selected");
                 this.IsSelected = true;
                 this.StateHasChanged();
             }
-            else if (this.IsSelected && !this.Container.IsSelected(Element))
+            else if (this.IsSelected && !this.Parent.IsSelected(Element))
             {
                 //on n'est plus sélectionné
                 Console.WriteLine("grid row become unselected");
@@ -82,20 +86,20 @@ namespace BlazorTest.Client.Components.Grid
 
         protected void RightClickElement(T element, MouseEventArgs args)
         {
-            this.Container.HandleSelect(element, true, args);
+            this.Parent.HandleSelect(element, true, args);
             //this.LaunchStateHasChanged();
         }
 
         protected void SelectElement(T element, MouseEventArgs args)
         {
             //pas besoin de recharger, on va laisser l'event de changement de prop selected du container se lever et faire ca proprement
-            this.Container.HandleSelect(element, false, args);
+            this.Parent.HandleSelect(element, false, args);
             //this.LaunchStateHasChanged();
         }
 
         protected void SelectAndValideElement(T element, MouseEventArgs args)
         {
-            this.Container.HandleDblClick(element);
+            this.Parent.HandleDblClick(element);
         }
 
         private void ManageSuscribe(bool withSuscribe)
@@ -119,7 +123,7 @@ namespace BlazorTest.Client.Components.Grid
 
         public void Dispose()
         {
-            this.Container.PropertyChanged -= Container_PropertyChanged;
+            this.Parent.PropertyChanged -= Container_PropertyChanged;
             this.ManageSuscribe(false);
         }
     }

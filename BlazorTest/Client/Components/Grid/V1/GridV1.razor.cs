@@ -9,9 +9,9 @@ using System.Linq;
 using System.Linq.Dynamic.Core;
 using System.Threading.Tasks;
 
-namespace BlazorTest.Client.Components.Grid
+namespace BlazorTest.Client.Components.Grid.V1
 {
-    public partial class Grid<T>
+    public partial class GridV1<T>
     {
         [Inject]
         protected IJSRuntime JsRuntime { get; set; }
@@ -51,8 +51,8 @@ namespace BlazorTest.Client.Components.Grid
         public Action<T> OnSelect { get; set; }
 
 
-        public List<GridColumn<T>> InternalColumns = new List<GridColumn<T>>();
-        public void AddColumn(GridColumn<T> column)
+        public List<GridColumnV1<T>> InternalColumns = new List<GridColumnV1<T>>();
+        public void AddColumn(GridColumnV1<T> column)
         {
             if (!InternalColumns.Contains(column))
             {
@@ -62,7 +62,7 @@ namespace BlazorTest.Client.Components.Grid
             //this.StateHasChanged();
         }
 
-        public void RemoveColumn(GridColumn<T> column)
+        public void RemoveColumn(GridColumnV1<T> column)
         {
             if (InternalColumns.Contains(column))
             {
@@ -79,7 +79,7 @@ namespace BlazorTest.Client.Components.Grid
         //}
         protected override void OnAfterRender(bool firstRender)
         {
-            Console.WriteLine("geckosgrid afterRender");
+            Console.WriteLine("GridV1 afterRender");
             base.OnAfterRender(firstRender);
         }
 

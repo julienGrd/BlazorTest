@@ -6,12 +6,12 @@ using System.Linq;
 using System.Security.Principal;
 using System.Threading.Tasks;
 
-namespace BlazorTest.Client.Components.Grid
+namespace BlazorTest.Client.Components.Grid.V2
 {
-    public partial class GridColumn<T> : IDisposable
+    public partial class GridColumnV2<T> : IDisposable
     {
-        [CascadingParameter]
-        public Grid<T> Parent { get; set; }
+        [Parameter]
+        public GridV2<T> Parent { get; set; }
 
         [Parameter]
         public RenderFragment<T> Body { get; set; }
@@ -93,6 +93,12 @@ namespace BlazorTest.Client.Components.Grid
         {
             this.CurrentDirection = null;
             this.StateHasChanged();
+        }
+
+        protected override void OnAfterRender(bool firstRender)
+        {
+            Console.WriteLine($"GridV2 column {this.Index} afterRender");
+            base.OnAfterRender(firstRender);
         }
     }
 }

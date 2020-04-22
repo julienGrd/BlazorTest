@@ -5,9 +5,7 @@
         <thead>
 
             <tr>
-                <CascadingValue Value="this">
-                    @(Columns)
-                </CascadingValue>
+                @(Columns)
             </tr>
         </thead>
 
@@ -18,9 +16,8 @@
             @foreach (var element in GetOrderedItems(Items))
             {
                 var localIdx = idx++;
-                <CascadingValue Value="@this">
-                    <GridRow Element="element" Index="@localIdx"></GridRow>
-                </CascadingValue>
+               
+                <GridRowV2 Element="element" Index="@localIdx" Parent="this"></GridRowV2>
             }
 
         </tbody>

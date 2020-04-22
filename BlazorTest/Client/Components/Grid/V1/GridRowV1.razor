@@ -5,7 +5,7 @@
     @onclick="@((args) => SelectElement(Element, args))"
     @ondblclick="@((args) => SelectAndValideElement(Element, args))"
     @oncontextmenu="@((args) => RightClickElement(Element, args))">
-    @foreach (var c in this.Container.InternalColumns.OrderBy(c => c.Index))
+    @foreach (var c in this.Parent.InternalColumns.OrderBy(c => c.Index))
     {
     <td scope="col">
         @(c.Body(Element))

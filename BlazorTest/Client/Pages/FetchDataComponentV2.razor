@@ -1,4 +1,4 @@
-﻿@page "/fetchdata"
+﻿@page "/fetchdatav2"
 @using BlazorTest.Shared
 @using BlazorTest.Client.Services;
 @using BlazorTest.Client.Components;
@@ -21,15 +21,15 @@ else
     </div>
     @if (CurrentPage == Page.Page1)
     {
-        <ListForecastV1 Items="forecasts1" />
+        <ListForecastV2 Items="forecasts1" />
     }
     else if (CurrentPage == Page.Page2)
     {
-        <ListForecastV1 Items="forecasts2" />
+        <ListForecastV2 Items="forecasts2" />
     }
     else if (CurrentPage == Page.Page3)
     {
-        <ListForecastV1 Items="forecasts3" />
+        <ListForecastV2 Items="forecasts3" />
     }
 
 }
@@ -55,7 +55,7 @@ else
 
     protected override void OnAfterRender(bool firstRender)
     {
-        Console.WriteLine("fetchDataV1 onAfterRender");
+        Console.WriteLine("fetchDataV2 onAfterRender");
         base.OnAfterRender(firstRender);
     }
 

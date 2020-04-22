@@ -1,0 +1,29 @@
+﻿@typeparam T
+@inherits CustomBaseComponent
+<div class="geckos-grid "  id="@ContainerId">
+    <table class="table table-sm table-borderless"  id="@Id">
+        <thead>
+
+            <tr>
+                <CascadingValue Value="this" IsFixed="true">
+                    @(Columns)
+                </CascadingValue>
+            </tr>
+        </thead>
+
+        <tbody class="group-element">
+            @{
+                var idx = 0;
+            }
+            @foreach (var element in GetOrderedItems(Items))
+            {
+                var localIdx = idx++;
+            <CascadingValue Value="this" IsFixed="true">
+                <GridRowV1 Element="element" Index="@localIdx"></GridRowV1>
+            </CascadingValue>
+               
+            }
+
+        </tbody>
+    </table>
+</div>
