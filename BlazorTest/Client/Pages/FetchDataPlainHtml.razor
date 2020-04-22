@@ -48,7 +48,7 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        var forecats = await Http.GetJsonAsync<WeatherForecast[]>("WeatherForecast");
+        var forecats = await Http.GetFromJsonAsync<WeatherForecast[]>("WeatherForecast");
         forecasts1 = forecats.Take(500).ToArray();
         forecasts2 = forecats.Skip(500).Take(500).ToArray();
         forecasts3 = forecats.Skip(1000).Take(500).ToArray();
