@@ -2,6 +2,7 @@
 @inherits CustomBaseComponent
 <tr class="element-grid-row  @((IsSelected) ? "selected-element" : "")"
     style="height: 25px;"
+    @key="@Element.GetHashCode()"
     @onclick="@((args) => SelectElement(Element, args))"
     @ondblclick="@((args) => SelectAndValideElement(Element, args))"
     @oncontextmenu="@((args) => RightClickElement(Element, args))">
