@@ -7,10 +7,11 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Linq.Dynamic.Core;
+using System.Threading.Tasks;
 
-namespace BlazorTest.Client.Components.Grid.V1
+namespace BlazorTest.Client.Components.Grid.V3
 {
-    public partial class GridV1<T>
+    public partial class GridVirtualize<T>
     {
         [Inject]
         protected IJSRuntime JsRuntime { get; set; }
@@ -20,6 +21,8 @@ namespace BlazorTest.Client.Components.Grid.V1
 
         [Parameter]
         public IEnumerable<T> Items { get; set; } = Enumerable.Empty<T>();
+
+        [Parameter] public double ItemHeight { get; set; }
 
         private T _currentItem;
 
@@ -49,9 +52,15 @@ namespace BlazorTest.Client.Components.Grid.V1
         [Parameter]
         public Action<T> OnSelect { get; set; }
 
+        protected ElementReference contentElement { get; set; }
+        int numItemsToSkipBefore;
+        int numItemsToShow;
 
-        public List<GridColumnV1<T>> InternalColumns = new List<GridColumnV1<T>>();
-        public void AddColumn(GridColumnV1<T> column)
+        double translateY => numItemsToSkipBefore * ItemHeight;
+
+
+        public List<GridColumnVirtualize<T>> InternalColumns = new List<GridColumnVirtualize<T>>();
+        public void AddColumn(GridColumnVirtualize<T> column)
         {
             if (!InternalColumns.Contains(column))
             {
@@ -61,7 +70,7 @@ namespace BlazorTest.Client.Components.Grid.V1
             //this.StateHasChanged();
         }
 
-        public void RemoveColumn(GridColumnV1<T> column)
+        public void RemoveColumn(GridColumnVirtualize<T> column)
         {
             if (InternalColumns.Contains(column))
             {
@@ -78,8 +87,49 @@ namespace BlazorTest.Client.Components.Grid.V1
         //}
         protected override void OnAfterRender(bool firstRender)
         {
-            Console.WriteLine("GridV1 afterRender");
+            
             base.OnAfterRender(firstRender);
+        }
+
+        protected override async Task OnAfterRenderAsync(bool firstRender)
+        {
+            Console.WriteLine("GridVirtualized afterRender");
+            if (firstRender)
+            {
+                var objectRef = DotNetObjectReference.Create(this);
+                var initResult = await JsRuntime.InvokeAsync<ScrollEventArgs>("VirtualizedComponent._initialize", objectRef, contentElement);
+                OnScroll(initResult);
+            }
+            await base.OnAfterRenderAsync(firstRender);
+        }
+
+        [JSInvokable]
+        public void OnScroll(ScrollEventArgs args)
+        {
+            // TODO: Support horizontal scrolling too
+            var relativeTop = args.ContainerRect.Top - args.ContentRect.Top;
+            numItemsToSkipBefore = Math.Max(0, (int)(relativeTop / ItemHeight));
+
+            var visibleHeight = args.ContainerRect.Bottom - (args.ContentRect.Top + numItemsToSkipBefore * ItemHeight);
+            numItemsToShow = (int)Math.Ceiling(visibleHeight / ItemHeight) + 3;
+
+            StateHasChanged();
+        }
+
+        public class ScrollEventArgs
+        {
+            public DOMRect ContainerRect { get; set; }
+            public DOMRect ContentRect { get; set; }
+        }
+
+        public class DOMRect
+        {
+            public double Top { get; set; }
+            public double Bottom { get; set; }
+            public double Left { get; set; }
+            public double Right { get; set; }
+            public double Width { get; set; }
+            public double Height { get; set; }
         }
 
         public void ResetOrdering(int idxExclude)
@@ -116,43 +166,63 @@ namespace BlazorTest.Client.Components.Grid.V1
             this.StateHasChanged();
         }
 
-        public IEnumerable<T> GetOrderedItems(IEnumerable<T> source)
+        public IEnumerable<T> GetOrderedItems()
         {
+            IEnumerable<T> baseList;
             if (!this._currentDirection?.Equals(default(ValueTuple<string, ListSortDirection, int>)) ?? false)
             {
-                return source.AsQueryable().OrderBy(this._currentDirection.OrderExpr + (this._currentDirection.Direction == ListSortDirection.Descending ? " descending" : string.Empty));
+                baseList = Items.AsQueryable().OrderBy(this._currentDirection.OrderExpr + (this._currentDirection.Direction == ListSortDirection.Descending ? " descending" : string.Empty));
             }
             else
             {
-                return source;
+                baseList = Items;
             }
+            return baseList;
+        }
+
+        public IEnumerable<T> GetShowingResult()
+        {
+            return this.GetOrderedItems().Skip(numItemsToSkipBefore).Take(numItemsToShow);
         }
 
         protected void SelectNextResult()
         {
             SelectTo(1);
-            ScrollToCurrentItem(true);
+
+            //potentia pb here, we need to compute the max 
+
+            numItemsToSkipBefore = numItemsToSkipBefore < (Items.Count() - 1) ? numItemsToSkipBefore + 1 : 0;
+
+
+            StateHasChanged();
+
+
+            //ScrollToCurrentItem(true);
         }
         protected void SelectPrevResult()
         {
             SelectTo(-1);
-            ScrollToCurrentItem(false);
+            numItemsToSkipBefore = numItemsToSkipBefore > 0 ? numItemsToSkipBefore - 1 : 0;
+
+
+            StateHasChanged();
+            //ScrollToCurrentItem(false);
         }
 
         protected void ScrollToCurrentItem(bool onTop)
         {
-            this.JsRuntime.InvokeVoidAsync("synchronizeTableScroll", ContainerId, onTop);
+           // this.JsRuntime.InvokeVoidAsync("synchronizeTableScroll", ContainerId, onTop);
         }
 
         private void SelectTo(int step)
         {
-            var lCurrentPosition = this.CurrentItem == null ? -1 : this.Items.ToList().IndexOf(this.CurrentItem);
+            var lCurrentPosition = this.CurrentItem == null ? -1 : this.GetOrderedItems().ToList().IndexOf(this.CurrentItem);
             int toIdx = 0;
             if (lCurrentPosition > -1)
             {
                 toIdx = lCurrentPosition + step;
             }
-            var toItem = this.Items.ElementAt(toIdx);
+            var toItem = this.GetOrderedItems().ElementAt(toIdx);
             if (toItem != null)
             {
                 Console.WriteLine("go to step " + step);

@@ -1,0 +1,31 @@
+﻿@using BlazorTest.Client.Components.Grid.V3
+    <GridVirtualize Items="@Items" @ref="Grid" ItemHeight="25">
+        <Columns>
+            <BlazorTest.Client.Components.Grid.V3.GridColumnVirtualize Header="Date" Index="1" T="@(BlazorTest.Shared.WeatherForecast)" CanOrder="true" OrderingExpression="Date">
+                <Body Context="forecast">
+                    @forecast.Date.ToShortDateString()
+                </Body>
+            </BlazorTest.Client.Components.Grid.V3.GridColumnVirtualize>
+            <GridColumnVirtualize  Header="Temp. (C)" Index="2" T="@(BlazorTest.Shared.WeatherForecast)" CanOrder="true" OrderingExpression="TemperatureC">
+                <Body Context="forecast">
+                    @forecast.TemperatureC
+                </Body>
+            </GridColumnVirtualize>
+            <GridColumnVirtualize  Header="Temp. (F)" Index="3" T="@(BlazorTest.Shared.WeatherForecast)" CanOrder="true" OrderingExpression="TemperatureF">
+                <Body Context="forecast">
+                    @forecast.TemperatureF
+                </Body>
+            </GridColumnVirtualize>
+            <GridColumnVirtualize  Header="Summary" Index="4" T="@(BlazorTest.Shared.WeatherForecast)" CanOrder="true" OrderingExpression="Summary">
+                <Body Context="forecast">
+                    @forecast.Summary
+                </Body>
+            </GridColumnVirtualize>
+            <GridColumnVirtualize  Header="City" Index="5" T="@(BlazorTest.Shared.WeatherForecast)" CanOrder="true" OrderingExpression="City.Name">
+                <Body Context="forecast">
+                    @forecast.City.Name
+                </Body>
+            </GridColumnVirtualize>
+
+        </Columns>
+    </GridVirtualize>

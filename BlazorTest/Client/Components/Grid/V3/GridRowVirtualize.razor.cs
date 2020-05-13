@@ -4,12 +4,12 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 
-namespace BlazorTest.Client.Components.Grid.V2
+namespace BlazorTest.Client.Components.Grid.V3
 {
-    public partial class GridRowV2<T> : IDisposable
+    public partial class GridRowVirtualize<T> : IDisposable
     {
-        [Parameter]
-        public GridV2<T> Parent { get; set; }
+        [CascadingParameter]
+        public GridVirtualize<T> Parent { get; set; }
 
         [Parameter]
         public T Element { get; set; }
@@ -37,11 +37,9 @@ namespace BlazorTest.Client.Components.Grid.V2
 
         protected override void OnAfterRender(bool firstRender)
         {
-            Console.WriteLine($"GridV2 row {this.Index} afterRender");
+            Console.WriteLine($"GridVirtualized row {this.Index} afterRender");
             base.OnAfterRender(firstRender);
         }
-
-
         private void Container_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             //on s'abonne au changement de selectedItem savoir si on doit rafraichir notre élément

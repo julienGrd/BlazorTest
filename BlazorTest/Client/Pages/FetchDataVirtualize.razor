@@ -1,0 +1,68 @@
+﻿@page "/fetchdataVirtualize"
+@using BlazorTest.Shared
+@using BlazorTest.Client.Services;
+@using BlazorTest.Client.Components;
+@inject HttpClient Http
+
+<h1>Weather forecast Virtualized</h1>
+
+<p>This component demonstrates fetching data from the server.</p>
+
+@if (forecasts1 == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <div>
+        <a class="page-selector @(CurrentPage == Page.Page1 ? "selected" : "")" @onclick="@(() => SetPage(Page.Page1))">Page 1</a>
+        <a class="page-selector @(CurrentPage == Page.Page2 ? "selected" : "")" @onclick="@(() => SetPage(Page.Page2))">Page 2</a>
+        <a class="page-selector @(CurrentPage == Page.Page3 ? "selected" : "")" @onclick="@(() => SetPage(Page.Page3))">Page 3</a>
+    </div>
+    @if (CurrentPage == Page.Page1)
+    {
+        <ListForecastVirtualized Items="forecasts1" />
+    }
+    else if (CurrentPage == Page.Page2)
+    {
+        <ListForecastVirtualized Items="forecasts2" />
+    }
+    else if (CurrentPage == Page.Page3)
+    {
+        <ListForecastVirtualized Items="forecasts3" />
+    }
+
+}
+
+@code {
+    private WeatherForecast[] forecasts1;
+    private WeatherForecast[] forecasts2;
+    private WeatherForecast[] forecasts3;
+
+    private enum Page
+    {
+        Page1, Page2, Page3
+    }
+
+    private Page CurrentPage { get; set; } = Page.Page1;
+
+    protected override async Task OnInitializedAsync()
+    {
+        forecasts1 = await Http.GetFromJsonAsync<WeatherForecast[]>("WeatherForecast");
+        forecasts2 = await Http.GetFromJsonAsync<WeatherForecast[]>("WeatherForecast");
+        forecasts3 = await Http.GetFromJsonAsync<WeatherForecast[]>("WeatherForecast");
+    }
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        Console.WriteLine("fetchDataVirtualized onAfterRender");
+        base.OnAfterRender(firstRender);
+    }
+
+    private void SetPage(Page page)
+    {
+        this.CurrentPage = page;
+        this.StateHasChanged();
+    }
+
+}

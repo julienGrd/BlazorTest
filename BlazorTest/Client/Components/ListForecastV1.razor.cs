@@ -1,10 +1,7 @@
-﻿using BlazorTest.Client.Components.Grid;
-using BlazorTest.Shared;
+﻿using BlazorTest.Shared;
 using Microsoft.AspNetCore.Components;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace BlazorTest.Client.Components
 {

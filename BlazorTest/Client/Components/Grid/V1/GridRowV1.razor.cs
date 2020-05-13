@@ -3,8 +3,6 @@ using Microsoft.AspNetCore.Components.Web;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace BlazorTest.Client.Components.Grid.V1
 {
@@ -47,7 +45,7 @@ namespace BlazorTest.Client.Components.Grid.V1
             //on s'abonne au changement de selectedItem savoir si on doit rafraichir notre élément
             if (e.PropertyName == nameof(this.Parent.CurrentItem))
             {
-                
+
                 this.ManageSelection();
             }
         }

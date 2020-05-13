@@ -259,6 +259,7 @@ app {
 .geckos-grid {
     background-color: var(--table-background-color);
     overflow-y: auto;
+    position: relative;
     overflow-x: hidden;
     /*height: 100%;*/
     flex-grow: 1;

@@ -1,8 +1,5 @@
 ﻿using Microsoft.AspNetCore.Components;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace BlazorTest.Client.Components
 {
@@ -36,7 +33,7 @@ namespace BlazorTest.Client.Components
             }
             set
             {
-                if(_internalValue.Hour != value.Hour || _internalValue.Minute != value.Minute)
+                if (_internalValue.Hour != value.Hour || _internalValue.Minute != value.Minute)
                 {
                     _internalValue = _internalValue.Date.AddHours(value.Hour).AddMinutes(value.Minute);
                     this.Value = _internalValue;
@@ -49,7 +46,7 @@ namespace BlazorTest.Client.Components
         {
             _internalValue = this.Value;
 
-            if(this.Min.HasValue && this.Value.ToDayTimeSpan() < this.Min)
+            if (this.Min.HasValue && this.Value.ToDayTimeSpan() < this.Min)
             {
                 this.InternalValue = this.Value.ToTime(this.Min.Value);
             }

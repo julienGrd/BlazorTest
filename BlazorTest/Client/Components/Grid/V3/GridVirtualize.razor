@@ -1,0 +1,30 @@
+﻿@typeparam T
+@inherits CustomBaseComponent
+<div class="geckos-grid " style="overflow-y: auto;"  id="@ContainerId">
+    <table class="table table-sm table-borderless"  id="@Id" tabindex="0" @onkeyup="@OnKeyUp">
+        <thead>
+
+            <tr>
+                <CascadingValue Value="this" IsFixed="true">
+                    @(Columns)
+                </CascadingValue>
+            </tr>
+        </thead>
+
+        <tbody class="group-element" @ref="contentElement" style="transform: translateY(@(translateY.ToString(System.Globalization.CultureInfo.InvariantCulture))px)" data-translateY="@translateY.ToString(System.Globalization.CultureInfo.InvariantCulture)">
+            @{
+                var idx = 0;
+            }
+            @foreach (var element in GetShowingResult())
+            {
+                var localIdx = idx++;
+            <CascadingValue Value="this" IsFixed="true">
+                <GridRowVirtualize Element="element" Index="@localIdx"></GridRowVirtualize>
+            </CascadingValue>
+               
+            }
+
+        </tbody>
+        <div style="width: 1px; height: @(((Items.Count() - numItemsToShow) * ItemHeight).ToString(System.Globalization.CultureInfo.InvariantCulture))px"></div>
+    </table>
+</div>

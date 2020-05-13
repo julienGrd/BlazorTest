@@ -2,12 +2,12 @@
 using System;
 using System.ComponentModel;
 
-namespace BlazorTest.Client.Components.Grid.V1
+namespace BlazorTest.Client.Components.Grid.V3
 {
-    public partial class GridColumnV1<T> : IDisposable
+    public partial class GridColumnVirtualize<T> : IDisposable
     {
         [CascadingParameter]
-        public GridV1<T> Parent { get; set; }
+        public GridVirtualize<T> Parent { get; set; }
 
         [Parameter]
         public RenderFragment<T> Body { get; set; }
@@ -93,7 +93,7 @@ namespace BlazorTest.Client.Components.Grid.V1
 
         protected override void OnAfterRender(bool firstRender)
         {
-            Console.WriteLine($"GridV1 column {this.Index} afterRender");
+            Console.WriteLine($"GridVirtualized column {this.Index} afterRender");
             base.OnAfterRender(firstRender);
         }
     }
