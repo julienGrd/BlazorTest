@@ -189,11 +189,11 @@ namespace BlazorTest.Client.Components.Grid.V3
         {
             SelectTo(1);
 
-            //potentia pb here, we need to compute the max 
-
-            numItemsToSkipBefore = numItemsToSkipBefore < (Items.Count() - 1) ? numItemsToSkipBefore + 1 : 0;
-
-
+            //not sure about this above line of code
+            if (numItemsToSkipBefore < (Items.Count() - numItemsToShow - 1))
+            {
+                numItemsToSkipBefore++;
+            }
             StateHasChanged();
 
 
@@ -222,13 +222,17 @@ namespace BlazorTest.Client.Components.Grid.V3
             {
                 toIdx = lCurrentPosition + step;
             }
-            var toItem = this.GetOrderedItems().ElementAt(toIdx);
-            if (toItem != null)
+            if(toIdx >= 0 && toIdx < this.GetOrderedItems().Count())
             {
-                Console.WriteLine("go to step " + step);
-                //this.CurrentItem = toItem;
-                this.HandleSelect(toItem, false, null);
+                var toItem = this.GetOrderedItems().ElementAt(toIdx);
+                if (toItem != null)
+                {
+                    Console.WriteLine("go to step " + step);
+                    //this.CurrentItem = toItem;
+                    this.HandleSelect(toItem, false, null);
+                }
             }
+            
 
         }
 
