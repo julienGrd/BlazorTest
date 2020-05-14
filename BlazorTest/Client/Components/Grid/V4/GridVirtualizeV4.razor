@@ -1,0 +1,32 @@
+﻿@typeparam T
+@inherits CustomBaseComponent
+
+<div class="geckos-grid " style="overflow-y: auto;"  id="@ContainerId">
+    <table class="table table-sm table-borderless" id="@Id" tabindex="0" @onkeyup="@OnKeyUp">
+        <thead>
+
+            <tr>
+                <CascadingValue Value="this" IsFixed="true">
+                    @(Columns)
+                </CascadingValue>
+            </tr>
+        </thead>
+        <div @key="@("spacerBefore")" @ref="spacerBefore" data-rendercount="@(++renderCount)" class="spacer" style="height: @((itemsToSkipBefore * ItemHeight).ToString(System.Globalization.CultureInfo.InvariantCulture))px"></div>
+        <tbody class="group-element">
+            @{
+                var idx = 0;
+            }
+
+            @foreach (var element in GetShowingResult())
+            {
+                var localIdx = idx++;
+                <CascadingValue Value="this" IsFixed="true">
+                    <GridRowVirtualizeV4 Element="element" Index="@localIdx"></GridRowVirtualizeV4>
+                </CascadingValue>
+
+            }
+
+        </tbody>
+        <div @key="@("spacerAfter")" @ref="spacerAfter" class="spacer" style="height: @((ItemsToSkipAfter * ItemHeight).ToString(System.Globalization.CultureInfo.InvariantCulture))px"></div>
+    </table>
+</div>

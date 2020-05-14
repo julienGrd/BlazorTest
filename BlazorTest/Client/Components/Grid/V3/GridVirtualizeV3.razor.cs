@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace BlazorTest.Client.Components.Grid.V3
 {
-    public partial class GridVirtualize<T>
+    public partial class GridVirtualizeV3<T>
     {
         [Inject]
         protected IJSRuntime JsRuntime { get; set; }
@@ -59,8 +59,8 @@ namespace BlazorTest.Client.Components.Grid.V3
         double translateY => numItemsToSkipBefore * ItemHeight;
 
 
-        public List<GridColumnVirtualize<T>> InternalColumns = new List<GridColumnVirtualize<T>>();
-        public void AddColumn(GridColumnVirtualize<T> column)
+        public List<GridColumnVirtualizeV3<T>> InternalColumns = new List<GridColumnVirtualizeV3<T>>();
+        public void AddColumn(GridColumnVirtualizeV3<T> column)
         {
             if (!InternalColumns.Contains(column))
             {
@@ -70,7 +70,7 @@ namespace BlazorTest.Client.Components.Grid.V3
             //this.StateHasChanged();
         }
 
-        public void RemoveColumn(GridColumnVirtualize<T> column)
+        public void RemoveColumn(GridColumnVirtualizeV3<T> column)
         {
             if (InternalColumns.Contains(column))
             {

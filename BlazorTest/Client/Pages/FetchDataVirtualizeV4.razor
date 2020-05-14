@@ -1,12 +1,12 @@
-﻿@page "/fetchdataVirtualize"
+﻿@page "/fetchdataVirtualizev4"
 @using BlazorTest.Shared
 @using BlazorTest.Client.Services;
 @using BlazorTest.Client.Components;
 @inject HttpClient Http
 
-<h1>Weather forecast Virtualized</h1>
+<h1>Weather forecast Virtualized, with steve sanderson solution</h1>
 
-<p>This component demonstrates fetching data from the server.</p>
+<p>This component demonstrates fetching data from the server. with this virtualize solution https://github.com/pranavkm/repro/pull/2</p>
 
 @if (forecasts1 == null)
 {
@@ -21,15 +21,15 @@ else
     </div>
     @if (CurrentPage == Page.Page1)
     {
-        <ListForecastVirtualized Items="forecasts1" />
+        <ListForecastVirtualizedV4 Items="forecasts1" />
     }
     else if (CurrentPage == Page.Page2)
     {
-        <ListForecastVirtualized Items="forecasts2" />
+        <ListForecastVirtualizedV4 Items="forecasts2" />
     }
     else if (CurrentPage == Page.Page3)
     {
-        <ListForecastVirtualized Items="forecasts3" />
+        <ListForecastVirtualizedV4 Items="forecasts3" />
     }
 
 }

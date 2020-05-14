@@ -7,12 +7,12 @@ using System.Collections.Generic;
 
 namespace BlazorTest.Client.Components
 {
-    public partial class ListForecastVirtualized
+    public partial class ListForecastVirtualizedV3
     {
         [Parameter]
         public IEnumerable<WeatherForecast> Items { get; set; }
 
-        public GridVirtualize<WeatherForecast> Grid;
+        public GridVirtualizeV3<WeatherForecast> Grid;
 
         protected override void OnAfterRender(bool firstRender)
         {

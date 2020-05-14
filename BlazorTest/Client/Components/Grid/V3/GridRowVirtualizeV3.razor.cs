@@ -6,10 +6,10 @@ using System.ComponentModel;
 
 namespace BlazorTest.Client.Components.Grid.V3
 {
-    public partial class GridRowVirtualize<T> : IDisposable
+    public partial class GridRowVirtualizeV3<T> : IDisposable
     {
         [CascadingParameter]
-        public GridVirtualize<T> Parent { get; set; }
+        public GridVirtualizeV3<T> Parent { get; set; }
 
         [Parameter]
         public T Element { get; set; }
