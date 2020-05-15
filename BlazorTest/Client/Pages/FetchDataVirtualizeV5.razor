@@ -1,0 +1,68 @@
+﻿@page "/fetchdataVirtualizev5"
+@using BlazorTest.Shared
+@using BlazorTest.Client.Services;
+@using BlazorTest.Client.Components;
+@inject HttpClient Http
+
+<h1>Weather forecast Virtualized, with steve sanderson solution</h1>
+
+<p>This component demonstrates fetching data from the server. with this virtualize solution https://github.com/pranavkm/repro/pull/2</p>
+
+@if (forecasts1 == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <div>
+        <a class="page-selector @(CurrentPage == Page.Page1 ? "selected" : "")" @onclick="@(() => SetPage(Page.Page1))">Page 1</a>
+        <a class="page-selector @(CurrentPage == Page.Page2 ? "selected" : "")" @onclick="@(() => SetPage(Page.Page2))">Page 2</a>
+        <a class="page-selector @(CurrentPage == Page.Page3 ? "selected" : "")" @onclick="@(() => SetPage(Page.Page3))">Page 3</a>
+    </div>
+    @if (CurrentPage == Page.Page1)
+    {
+        <ListForecastVirtualizedV5 Items="forecasts1" />    
+    }
+    else if (CurrentPage == Page.Page2)
+    {
+        <ListForecastVirtualizedV5 Items="forecasts2" />
+    }
+    else if (CurrentPage == Page.Page3)
+    {
+        <ListForecastVirtualizedV5 Items="forecasts3" />
+    }
+
+}
+
+@code {
+    private MeasurableItem[] forecasts1;
+    private MeasurableItem[] forecasts2;
+    private MeasurableItem[] forecasts3;
+
+    private enum Page
+    {
+        Page1, Page2, Page3
+    }
+
+    private Page CurrentPage { get; set; } = Page.Page1;
+
+    protected override async Task OnInitializedAsync()
+    {
+        forecasts1 = await Http.GetFromJsonAsync<MeasurableItem[]>("MeasurableItem");
+        forecasts2 = await Http.GetFromJsonAsync<MeasurableItem[]>("MeasurableItem");
+        forecasts3 = await Http.GetFromJsonAsync<MeasurableItem[]>("MeasurableItem");
+    }
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        Console.WriteLine("fetchDataVirtualized onAfterRender");
+        base.OnAfterRender(firstRender);
+    }
+
+    private void SetPage(Page page)
+    {
+        this.CurrentPage = page;
+        this.StateHasChanged();
+    }
+
+}

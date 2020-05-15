@@ -24,6 +24,8 @@ namespace BlazorTest.Client.Components.Grid.V4
 
         [Parameter] public double ItemHeight { get; set; }
 
+        public IEnumerable<T> OrderedItems { get; set; } = Enumerable.Empty<T>();
+
         private T _currentItem;
 
         public T CurrentItem
@@ -93,7 +95,11 @@ namespace BlazorTest.Client.Components.Grid.V4
         //    Console.WriteLine(Environment.StackTrace);
         //    return base.ShouldRender();
         //}
-
+        protected override void OnInitialized()
+        {
+            this.ComputeOrderedItems();
+            base.OnInitialized();
+        }
 
         protected override async Task OnAfterRenderAsync(bool firstRender)
         {
@@ -169,27 +175,26 @@ namespace BlazorTest.Client.Components.Grid.V4
                 Index = index
             };
             this.ResetOrdering(this._currentDirection.Index);
+            this.ComputeOrderedItems();
             Console.WriteLine("geckosgrid Order");
             this.StateHasChanged();
         }
 
-        public IEnumerable<T> GetOrderedItems()
+        public void ComputeOrderedItems()
         {
-            IEnumerable<T> baseList;
             if (!this._currentDirection?.Equals(default(ValueTuple<string, ListSortDirection, int>)) ?? false)
             {
-                baseList = Items.AsQueryable().OrderBy(this._currentDirection.OrderExpr + (this._currentDirection.Direction == ListSortDirection.Descending ? " descending" : string.Empty));
+                OrderedItems = Items.AsQueryable().OrderBy(this._currentDirection.OrderExpr + (this._currentDirection.Direction == ListSortDirection.Descending ? " descending" : string.Empty));
             }
             else
             {
-                baseList = Items;
+                OrderedItems = Items;
             }
-            return baseList;
         }
 
         public IEnumerable<T> GetShowingResult()
         {
-            return this.GetOrderedItems().Skip(itemsToSkipBefore).Take(itemsToShow);
+            return this.OrderedItems.Skip(itemsToSkipBefore).Take(itemsToShow);
         }
 
         protected void SelectNextResult()
@@ -223,15 +228,15 @@ namespace BlazorTest.Client.Components.Grid.V4
 
         private void SelectTo(int step)
         {
-            var lCurrentPosition = this.CurrentItem == null ? -1 : this.GetOrderedItems().ToList().IndexOf(this.CurrentItem);
+            var lCurrentPosition = this.CurrentItem == null ? -1 : this.OrderedItems.ToList().IndexOf(this.CurrentItem);
             int toIdx = 0;
             if (lCurrentPosition > -1)
             {
                 toIdx = lCurrentPosition + step;
             }
-            if(toIdx >= 0 && toIdx < this.GetOrderedItems().Count())
+            if(toIdx >= 0 && toIdx < this.OrderedItems.Count())
             {
-                var toItem = this.GetOrderedItems().ElementAt(toIdx);
+                var toItem = this.OrderedItems.ElementAt(toIdx);
                 if (toItem != null)
                 {
                     Console.WriteLine("go to step " + step);

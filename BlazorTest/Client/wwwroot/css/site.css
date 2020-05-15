@@ -52,6 +52,12 @@ app {
     text-overflow: ellipsis;
 }
 
+    .main > .content {
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+    }
+
 .sidebar {
     background-image: linear-gradient(180deg, rgb(5, 39, 103) 0%, #3a0647 70%);
 }
@@ -191,7 +197,12 @@ app {
     }
 }
 
-
+p.lorem-ipsum {
+    margin-bottom: 0;
+    line-height: 20px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
 
 
 :root {

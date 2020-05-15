@@ -111,6 +111,11 @@ namespace BlazorTest.Client.Components.Grid.V3
             numItemsToSkipBefore = Math.Max(0, (int)(relativeTop / ItemHeight));
 
             var visibleHeight = args.ContainerRect.Bottom - (args.ContentRect.Top + numItemsToSkipBefore * ItemHeight);
+            Console.WriteLine("args.ContainerRect.Bottom  " + args.ContainerRect.Bottom);
+            Console.WriteLine("args.ContentRect.Top " + args.ContentRect.Top);
+            Console.WriteLine("numItemsToSkipBefore " + numItemsToSkipBefore);
+            Console.WriteLine("visibleHeight " + visibleHeight);
+
             numItemsToShow = (int)Math.Ceiling(visibleHeight / ItemHeight) + 3;
 
             StateHasChanged();

@@ -1,0 +1,16 @@
+﻿@using BlazorTest.Client.Components.Grid.V5
+    <GridVirtualizeV5 Items="@Items" @ref="Grid">
+        <Columns>
+            <GridColumnVirtualizeV5 Header="Id" Index="1" T="@(BlazorTest.Shared.MeasurableItem)" CanOrder="true" OrderingExpression="Id">
+                <Body Context="mi">
+                    @mi.Id
+                </Body>
+            </GridColumnVirtualizeV5>
+            <GridColumnVirtualizeV5 Header="Text" Index="2" T="@(BlazorTest.Shared.MeasurableItem)" CanOrder="true" OrderingExpression="Text">
+                <Body Context="mi">
+                    <p class="lorem-ipsum">@mi.Text</p>
+                </Body>
+            </GridColumnVirtualizeV5>
+
+        </Columns>
+    </GridVirtualizeV5>

@@ -1,0 +1,22 @@
+﻿@typeparam T
+@inherits CustomBaseComponent
+<th class="@(GetDirectionClass())" style="@(string.IsNullOrEmpty(Width) ? "": "width: " + Width)" title="@Title" @onclick="@(() => Order())">
+    <div class="header-clickable-zone">
+        @* @onclick="@Order" *@
+        <span class="lib-header-grid">
+            @this.Header
+        </span>
+        @if (this.CurrentDirection.HasValue)
+        {
+            if (CurrentDirection == System.ComponentModel.ListSortDirection.Descending)
+            {
+        <i class="fas fa-caret-down"></i>
+            }
+            else
+            {
+        <i class="fas fa-caret-up"></i>
+            }
+        }
+    </div>
+
+</th>

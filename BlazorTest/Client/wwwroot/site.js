@@ -14,6 +14,10 @@ var _list2 = null;
 var _list3 = null;
 var _currentPage = null;
 
+function mesureHeight(id) {
+    return $("#" + id).height();
+}
+
 function setPage(page) {
     _currentPage = page;
 
@@ -85,7 +89,8 @@ window.VirtualizedComponent = {
         scrollableContainer.addEventListener('scroll', e => {
             const lastKnownValues = {
                 containerRect: scrollableContainer.getBoundingClientRect(),
-                contentRect: readClientRectWithoutTransform(contentElement)
+                contentRect: readClientRectWithoutTransform(contentElement),
+                widthColumn: getWidthTable()
             };
 
             if (!this._ticking) {
@@ -100,10 +105,15 @@ window.VirtualizedComponent = {
 
         return {
             containerRect: scrollableContainer.getBoundingClientRect(),
-            contentRect: readClientRectWithoutTransform(contentElement)
+            contentRect: readClientRectWithoutTransform(contentElement),
+            widthColumn: getWidthTable()
         };
     }
 };
+
+function getWidthTable() {
+    return $(".geckos-grid").width();
+}
 
 function readClientRectWithoutTransform(elem) {
     const rect = elem.getBoundingClientRect();
