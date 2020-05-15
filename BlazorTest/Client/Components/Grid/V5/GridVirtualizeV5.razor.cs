@@ -218,7 +218,7 @@ namespace BlazorTest.Client.Components.Grid.V5
                 //Console.WriteLine("numItemsToShow " + numItemsToShow);
                 //Console.WriteLine("rest " + rest);
 
-                if (numItemsToSkipBefore > 0 && rest > 2)
+                if (numItemsToSkipBefore > 0)
                 {
                     //Console.WriteLine("remove one item to skip and add one item to show");
 
@@ -226,9 +226,14 @@ namespace BlazorTest.Client.Components.Grid.V5
 
                     numItemsToShow++;
 
-                    additionnalTranslate = measurableOreredItems.ElementAt(idx).GetHeight(tableWidth);
+                    if(idx < measurableOreredItems.Count())
+                    {
+                        additionnalTranslate = measurableOreredItems.ElementAt(idx).GetHeight(tableWidth);
 
-                    translateY -= additionnalTranslate;
+                        translateY -= additionnalTranslate;
+                    }
+
+                    
                 }
 
                 if (rest > 1)
